@@ -44,8 +44,20 @@ button {
 	border: 2px solid var(--primary);
 	border-radius: 5px;
 }
+#options.disabled button {
+	pointer-events: none;
+}
 
 #options button:hover {
 	background: var(--primary);
 	color: white;
+}
+
+#options button.correct {
+	background: var(--correct);
+	border-color: var(--correct);
+}
+#options button.incorrect {
+	background: var(--incorrect);
+	border-color: var(--incorrect);
 }

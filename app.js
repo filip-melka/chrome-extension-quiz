@@ -2,6 +2,8 @@ const CATEGORY = document.getElementById('category')
 const QUESTION = document.getElementById('question')
 const OPTIONS = document.getElementById('options')
 
+let correctAnswerIndex
+
 async function nextQuestion() {
 	const res = await fetch('https://opentdb.com/api.php?amount=1&type=multiple')
 	if (res.ok) {
@@ -12,19 +14,29 @@ async function nextQuestion() {
 		CATEGORY.innerHTML = category
 		QUESTION.innerHTML = question
 
-		OPTIONS.innerHTML = '' // remove previous buttons
-		// insert incorrect answers
-		incorrect_answers.forEach((incorrectAnswer) => {
-			OPTIONS.innerHTML += `<button>${incorrectAnswer}</button>`
-		})
+		const options = [...incorrect_answers]
 
 		// insert correct answer at random position
-		const index = Math.round(Math.random() * (incorrect_answers.length + 1))
-		const CORRECT_BUTTON = document.createElement('button')
-		CORRECT_BUTTON.innerHTML = correct_answer
-		index < incorrect_answers.length
-			? OPTIONS.insertBefore(CORRECT_BUTTON, OPTIONS.childNodes[index])
-			: OPTIONS.appendChild(CORRECT_BUTTON)
+		correctAnswerIndex = Math.round(Math.random() * incorrect_answers.length)
+		options.splice(correctAnswerIndex, 0, correct_answer)
+
+		// insert the text into the option buttons and add event listeners
+		for (let i = 0; i < options.length; i++) {
+			const optionBtn = document.getElementById(`option-${i}`)
+			optionBtn.innerHTML = options[i]
+			optionBtn.addEventListener('click', () => handleClick(i))
+		}
+	}
+}
+
+function handleClick(index) {
+	OPTIONS.className = 'disabled'
+	if (index === correctAnswerIndex) {
+		document.getElementById(`option-${index}`).className = 'correct'
+	} else {
+		document.getElementById(`option-${index}`).className = 'incorrect'
+		document.getElementById(`option-${correctAnswerIndex}`).className =
+			'correct'
 	}
 }
 
