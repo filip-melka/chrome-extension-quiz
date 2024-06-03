@@ -2,6 +2,7 @@ const CATEGORY = document.getElementById('category')
 const QUESTION = document.getElementById('question')
 const OPTIONS = document.getElementById('options')
 const NEXT_BTN = document.getElementById('next-btn')
+NEXT_BTN.addEventListener('click', nextQuestion)
 
 let correctAnswerIndex
 
